@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<title>Home</title>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+	<section id="main">
+		<nav>
+			<h1>Tweet</h1>
+
+			<ul class="menu">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Result</a></li>
+			</ul>
+		</nav>
+
+		<section id="intro">
+      <img src="{{ url_for('static', filename='styles/Twitter.jpg') }}" >
+      <div class="desc-text">
+        <h1 class="center">Twitter Sentiment Analysis</h1>
+        <p>Finding positive or negative sentiment in text is the process of sentiment analysis. Businesses frequently utilize it to analyze customers, measure brand reputation, and uncover sentiment in social data.(br>With the use of Twitter sentiment analysis tools, you can automatically determine the polarity of each comment and sort through enormous tweet collections.
+        </p>
+      </div>
+    </section>
+
+    <section id="search">
+  	  <h1 class="center">Enter the Topic of Tweets for Sentiment Analysis.</h1>
+		  <form action = "{{ url_for('index')}}" method="POST">
+			  <textarea wrap="off" overflow="hidden" name="Tweet_URL" placeholder="Enter here..." rows="1" cols="50"></textarea>
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </section>
+		
+    <section id="vid">
+      <img src="{{ url_for('static', filename='styles/example.gif') }}" >
+
+    </section>
+
+    <footer>
+      <div class="foot">
+        <h1 class="center">Project done by</h1>
+      
+        <div class="people">
+          <div class="person">
+            <p></p>
+          </div>
+      
+          <div class="person">
+            <p>Vanshika Sangtani</p>
+            <p>2020A7PS0031U</p>
+            <p>Sept-Dec 2023</p>
+            <div class="social">
+              <!--<a href="#"><i class="fa fa-github"></i></a>
+              <a href="#"><i class="fa fa-linkedin"></i></a>-->
+            </div>
+          </div>
+
+          <div class="person">
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </section>
+</body>
+</html>
