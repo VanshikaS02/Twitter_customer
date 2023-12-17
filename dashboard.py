@@ -11,7 +11,7 @@ from plotly.graph_objects import rgb
 
 URL = 'https://twitter.com/elonmusk/status/1388693126206918658'
 usr = "VANSHIKASA21372"  
-pwd = "f?nQ&aM7e"  
+pwd = ""  
 file_path = r'C:\Users\vansh\Desktop\Twitter_customer\collected_data.csv'
 
 dash_app = dash.Dash(__name__)
