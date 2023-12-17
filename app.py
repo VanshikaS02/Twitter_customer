@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for,request,redirect,session
+from flask import Flask, render_template, url_for, request, redirect, session
 import dash
 from dash import dcc
 from dash import html
@@ -8,15 +8,14 @@ import pandas as pd
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.serving import run_simple
 import plotly.graph_objects as go
-from bot import main
 from get_sentimet import generate_sentiments
 from clean_collected_data import preprocess_data
-from selenium.common.exceptions import NoSuchElementException, WebDriverException
-import plotly.express as px
+from selenium.webdriver.chrome.options import Options
+import os
 import plotly.graph_objects as go
 from dash import no_update
-import os
-from selenium.webdriver.chrome.options import Options
+from api import fetch_twitter_data, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET  
+import tweepy
 
 chrome_options = Options()
 chrome_options.binary_location = str(os.environ.get("GOOGLE_CHROME_BIN"))
@@ -29,48 +28,54 @@ file_path = r'C:\Users\vansh\Desktop\Twitter_customer\collected_data.csv'
 markdown_text1 = '''
 # Insights on your Twitter Post
 
-The dashboard presents visuals on the analysis conducted on the user response data on your twitter post. 
-The dashboard gives an overview of the sentiment analysis of the tweet replies recorded over the span of posting date and today.
+The dashboard presents visuals on the analysis conducted on the user response data on your Twitter post. 
+The dashboard gives an overview of the sentiment analysis of the tweet replies recorded over the span of the posting date and today.
 
 ## Sentiment Analysis
-The first graph depicts **Sentiment Analysis of Replies** on your twitter post.This graph shows how the sentiments 
-of reaction of users on your post have changed or evolved over time. This graph is useful to understand the twitter post popularity
+The first graph depicts **Sentiment Analysis of Replies** on your Twitter post. This graph shows how the sentiments 
+of the reactions of users on your post have changed or evolved over time. This graph is useful to understand the Twitter post popularity
 over time and general reaction over time.
 '''
 
 markdown_text2 = '''
 ## User Comment Insights
-The second graph depicts **User Data Statistics** on your twitter post. This graph shows the popular reply stats on your post
-that may prove useful as an important customer review feedback. The graph plots 3 useful features, the reply user likes, comment and retweets, 
-hovered by the reply comment for reference.
-This is a very valuable customer review graph.
+The second graph depicts **User Data Statistics** on your Twitter post. This graph shows the popular reply stats on your post
+that may prove useful as an important customer review feedback. The graph plots 3 useful features: reply user likes, comments, and retweets, 
+hovered by the reply comment for reference. This is a very valuable customer review graph.
 '''
 
 markdown_text3 = '''
 ## Popular Reply  Sentiments
 The third graph shows a tabular representation of the **Sentiments of the five most popular by likes user comments** on your tweet. These statistics give 
-an insight of the general impression of your post. A very good popular post makes a good about your twitter post, while a 
-negetive feed back may prove useful to your company.
-
+insight into the general impression of your post. A very good popular post makes a good impression about your Twitter post, while a 
+negative feedback may prove useful to your company.
 '''
+
+#def get_data(url):
+#    try:
+#        # Fetch Twitter data using Tweepy
+#        twitter_data = fetch_twitter_data(url)  # Implement this function in api.py
+#        # Process the data as needed
+#        data, small_data = preprocess_data(twitter_data)
+#        return data, small_data
+#    except Exception as e:
+#        print("Error during data retrieval:", str(e))
+#        return pd.DataFrame(), pd.DataFrame()
+
 def get_data(url):
     try:
-        main(usr, pwd, file_path, url)
-        data, small_data = preprocess_data()
+        twitter_data = fetch_twitter_data(url)
+        # Process twitter_data as needed
+        data, small_data = preprocess_data(twitter_data)  # Assuming preprocess_data() takes twitter_data as an argument
         return data, small_data
     except Exception as e:
         print("Error during data retrieval:", str(e))
         return pd.DataFrame(), pd.DataFrame()
     
-#def get_data(url):
-#    main(usr, pwd,file_path,url)
-#    data, small_data = preprocess_data()
-#    return data, small_data
-
 server = Flask(__name__)
 server.secret_key = "abc" 
 
-dash_app = dash.Dash(__name__, server = server, url_base_pathname='/dashboard/' )
+dash_app = dash.Dash(__name__, server=server, url_base_pathname='/dashboard/' )
 
 dash_app.layout = html.Div([
     dcc.Markdown(children=markdown_text1),
@@ -78,9 +83,8 @@ dash_app.layout = html.Div([
     dcc.Markdown(children=markdown_text2),
     dcc.Graph(id="user-comment-insights"),
     dcc.Markdown(children=markdown_text3),
-    dcc.Graph(id = "Top-Tweets-Insights"),
+    dcc.Graph(id="Top-Tweets-Insights"),
     dcc.Input(id="input-url", type="url", value=URL)
-    
 ])
 
 @dash_app.callback(
@@ -157,7 +161,7 @@ def update_insights(url):
 def index():
     return render_template('index.html')
 
-@server.route('/',methods = ['GET','POST'])
+@server.route('/', methods=['GET', 'POST'])
 def hello():
     if request.method == 'POST':
         url = request.form.get('Tweet_URL')
@@ -173,9 +177,4 @@ app = DispatcherMiddleware(server, {
     '/dash': dash_app.server,
 })
 
-
 run_simple('0.0.0.0', 8080, app, use_reloader=True, use_debugger=True)
-
-
-
-
