@@ -184,7 +184,6 @@ def generate_sentiment_predictions(model,test_list,TEXT):
         predictions.append(predict_sentiment(model,tweet,TEXT))
     return predictions
 
-
 def generate_sentiments(df):
     df = df[df['comment'].notna()]
     X = clean_sentiment_data(df['comment'])
