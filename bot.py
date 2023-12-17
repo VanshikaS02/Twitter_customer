@@ -141,7 +141,6 @@ def main(username, password, filepath, post_url):
     finally:
         driver.quit()
 
-
 if __name__ == '__main__':
     usr = "VANSHIKASA21372"  # Your Twitter username
     pwd = "f?nQ&aM7e"  # Your Twitter password
