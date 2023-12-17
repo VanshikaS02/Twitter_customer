@@ -38,6 +38,5 @@ def preprocess_data():
         return pd.DataFrame(), pd.DataFrame()
 
 
-
 data, small_data = preprocess_data()
 print(data.head())
