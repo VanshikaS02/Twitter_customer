@@ -17,10 +17,10 @@ file_path = r'C:\Users\vansh\Desktop\Twitter_customer\collected_data.csv'
 dash_app = dash.Dash(__name__)
 
 dash_app.layout = html.Div([
-    dcc.Input(id="input-url", type="url", value=URL),
     dcc.Graph(id="sentiment-time-series-chart"),
     dcc.Graph(id="user-comment-insights"),
-    dcc.Graph(id="Top-Tweets-Insights")
+    dcc.Graph(id="Top-Tweets-Insights"),
+    dcc.Input(id="input-url", type="url", value=URL),
 ])
 
 @dash_app.callback(
@@ -82,3 +82,4 @@ def update_insights(url):
 
 if __name__ == "__main__":
     dash_app.run_server(debug=True)
+    
